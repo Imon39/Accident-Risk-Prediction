@@ -3,7 +3,8 @@ import pandas as pd
 import numpy as np
 import os
 import requests
-import joblib 
+import pickle  
+
 class EnsembleModel:
     def __init__(self, model1, model2, w1=0.65, w2=0.35):
         self.model1 = model1
@@ -17,15 +18,11 @@ class EnsembleModel:
         return self.w1 * p1 + self.w2 * p2
 
 
-MODEL_URL = "https://drive.google.com/uc?export=download&id=149BVn3gfa7jTYVhvII4mIcjOOcBzFmz7"
-MODEL_PATH = "final_model.pkl"
+MODEL_URL = "https://drive.google.com/uc?export=download&id=1nLUtL6Z5lYshIXulqGeqEcrGSIO4QLAs"
+MODEL_PATH = "final_model_pickle.pkl"
 
-if not os.path.exists(MODEL_PATH):
-    r = requests.get(MODEL_URL)
-    with open(MODEL_PATH, "wb") as f:
-        f.write(r.content)
-
-model = joblib.load(MODEL_PATH)
+with open(MODEL_PATH, "rb") as f:
+    model = pickle.load(f)
 
 st.set_page_config(page_title="Pick the Safer Road", page_icon="🚗", layout="centered")
 st.title("Pick the safer road- Predict Accident Risk")
@@ -116,6 +113,7 @@ if st.button("Next Prediction"):
 st.markdown("_____")
 
 st.caption("Made By ** IMON HOSSAIN ** | kaggle:`imonhossain`")
+
 
 
 
