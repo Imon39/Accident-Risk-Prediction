@@ -4,11 +4,7 @@ import numpy as np
 import joblib
 import os
 import requests
-import subprocess
-
-subprocess.run(["pip", "show", "joblib"])
-
-
+import pickle  
 class EnsembleModel:
     def __init__(self, model1, model2, w1=0.65, w2=0.35):
         self.model1 = model1
@@ -30,7 +26,8 @@ if not os.path.exists(MODEL_PATH):
     with open(MODEL_PATH, "wb") as f:
         f.write(r.content)
 
-model = joblib.load(MODEL_PATH)
+with open(MODEL_PATH, "rb") as f:  # <-- load model with pickle
+    model = pickle.load(f)
 
 st.set_page_config(page_title="Pick the Safer Road", page_icon="🚗", layout="centered")
 st.title("Pick the safer road- Predict Accident Risk")
@@ -121,6 +118,7 @@ if st.button("Next Prediction"):
 st.markdown("_____")
 
 st.caption("Made By ** IMON HOSSAIN ** | kaggle:`imonhossain`")
+
 
 
 
