@@ -1,9 +1,9 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import gdown
+import pickle
 import os
-import requests
-import pickle  
 
 class EnsembleModel:
     def __init__(self, model1, model2, w1=0.65, w2=0.35):
@@ -18,12 +18,16 @@ class EnsembleModel:
         return self.w1 * p1 + self.w2 * p2
 
 
-MODEL_URL = "https://drive.google.com/uc?export=download&id=1nLUtL6Z5lYshIXulqGeqEcrGSIO4QLAs"
+MODEL_URL = "https://drive.google.com/uc?id=1nLUtL6Z5lYshIXulqGeqEcrGSIO4QLAs"
 MODEL_PATH = "final_model_pickle.pkl"
 
+# Download only if it doesn't exist
+if not os.path.exists(MODEL_PATH):
+    gdown.download(MODEL_URL, MODEL_PATH, quiet=False)
+
+# Load the model
 with open(MODEL_PATH, "rb") as f:
     model = pickle.load(f)
-
 st.set_page_config(page_title="Pick the Safer Road", page_icon="🚗", layout="centered")
 st.title("Pick the safer road- Predict Accident Risk")
 st.markdown(" Test Your prediction About Road safety")
@@ -113,6 +117,7 @@ if st.button("Next Prediction"):
 st.markdown("_____")
 
 st.caption("Made By ** IMON HOSSAIN ** | kaggle:`imonhossain`")
+
 
 
 
