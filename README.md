@@ -30,8 +30,8 @@ Pandas / NumPy
 Joblib
 
 📦 Installation
-git clone https://github.com/yourusername/accident-risk-game.git
-cd accident-risk-game
+git clone https://github.com/Imon39/Accident-Risk-Prediction.git
+cd Accident-Risk-Game
 pip install -r requirements.txt
 streamlit run app.py
 
