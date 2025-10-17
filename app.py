@@ -4,7 +4,6 @@ import numpy as np
 import lightgbm
 import xgboost
 
-
 class EnsembleModel:
     def __init__(self, model1, model2, w1=0.65, w2=0.35):
         self.model1 = model1
@@ -19,7 +18,20 @@ class EnsembleModel:
 
 import joblib
 
-model=joblib.load("final_model.pkl")
+import os
+import joblib
+import requests
+
+MODEL_URL = "https://drive.google.com/uc?export=download&id=149BVn3gfa7jTYVhvII4mIcjOOcBzFmz7"
+MODEL_PATH = "final_model.pkl"
+
+if not os.path.exists(MODEL_PATH):
+    r = requests.get(MODEL_URL)
+    with open(MODEL_PATH, "wb") as f:
+        f.write(r.content)
+
+model = joblib.load(MODEL_PATH)
+
 st.set_page_config(page_title="Pick the Safer Road", page_icon="🚗", layout="centered")
 st.title("Pick the safer road- Predict Accident Risk")
 st.markdown(" Test Your prediction About Road safety")
@@ -107,4 +119,5 @@ if st.button("Next Prediction"):
 
 
 st.markdown("_____")
+
 st.caption("Made By ** IMON HOSSAIN ** | kaggle:`imonhossain`")
