@@ -3,6 +3,6 @@ pandas
 numpy
 scikit-learn
 xgboost
-lightgbm
+lightgbm==4.1.0
 joblib
 requests
