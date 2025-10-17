@@ -1,6 +1,9 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import joblib
+import os
+import requests
 
 class EnsembleModel:
     def __init__(self, model1, model2, w1=0.65, w2=0.35):
@@ -14,11 +17,6 @@ class EnsembleModel:
         p2 = self.model2.predict(X)
         return self.w1 * p1 + self.w2 * p2
 
-import joblib
-
-import os
-import joblib
-import requests
 
 MODEL_URL = "https://drive.google.com/uc?export=download&id=149BVn3gfa7jTYVhvII4mIcjOOcBzFmz7"
 MODEL_PATH = "final_model.pkl"
@@ -119,4 +117,5 @@ if st.button("Next Prediction"):
 st.markdown("_____")
 
 st.caption("Made By ** IMON HOSSAIN ** | kaggle:`imonhossain`")
+
 
