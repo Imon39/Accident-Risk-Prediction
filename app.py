@@ -1,8 +1,6 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import lightgbm
-import xgboost
 
 
 class EnsembleModel:
@@ -107,4 +105,5 @@ if st.button("Next Prediction"):
 
 
 st.markdown("_____")
+
 st.caption("Made By ** IMON HOSSAIN ** | kaggle:`imonhossain`")
