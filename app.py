@@ -1,0 +1,110 @@
+import streamlit as st
+import pandas as pd
+import numpy as np
+import lightgbm
+import xgboost
+
+
+class EnsembleModel:
+    def __init__(self, model1, model2, w1=0.65, w2=0.35):
+        self.model1 = model1
+        self.model2 = model2
+        self.w1 = w1
+        self.w2 = w2
+
+    def predict(self, X):
+        p1 = self.model1.predict(X)
+        p2 = self.model2.predict(X)
+        return self.w1 * p1 + self.w2 * p2
+
+import joblib
+
+model=joblib.load("final_model.pkl")
+st.set_page_config(page_title="Pick the Safer Road", page_icon="🚗", layout="centered")
+st.title("Pick the safer road- Predict Accident Risk")
+st.markdown(" Test Your prediction About Road safety")
+if 'score' not in st.session_state:
+    st.session_state.score = 0
+if 'round' not in st.session_state:
+    st.session_state.round = 1
+def random_road():
+    return {
+        "num_lanes": np.random.choice([1, 2, 3, 4]),
+        "curvature": round(np.random.uniform(0.0, 1.0), 2),
+        "speed_limit": np.random.choice([30, 40, 50, 60, 70]),
+        "lighting": np.random.choice(["daylight", "dim", "night"]),
+        "weather": np.random.choice(["clear", "rainy", "foggy"]),
+        "road_type": np.random.choice(["urban", "rural", "highway"]),
+        "road_signs_present": np.random.choice([0, 1]),
+        "public_road": np.random.choice([0, 1]),
+        "time_of_day": np.random.choice(["morning", "afternoon", "evening", "night"]),
+        "holiday": np.random.choice([0, 1]),
+        "school_season": np.random.choice([0, 1]),
+        "num_reported_accidents": np.random.randint(0, 4)
+    }
+if 'road1' not in st.session_state:
+    st.session_state.road1 = random_road()
+if 'road2' not in st.session_state:
+    st.session_state.road2 = random_road()
+
+road1=st.session_state.road1
+road2=st.session_state.road2
+
+col1,col2=st.columns(2)
+col1.write("Road1")
+col1.json(road1)
+col2.write("Road2")
+col2.json(road2)
+
+choice=st.radio("which Road do you think much safer!!", ["Road1", "Road2"])
+
+def creating_feature(df):
+    df = df.copy()
+
+    numeric_c = ['num_lanes', 'curvature', 'speed_limit', 'num_reported_accidents']
+    for col in numeric_c:
+        if col in df.columns:
+            df[col] = pd.to_numeric(df[col], errors='coerce')
+
+    bool_c = ['road_signs_present', 'public_road', 'holiday', 'school_season']
+    for col in bool_c:
+        if col in df.columns:
+            df[col] = df[col].astype(float)
+
+    # derived features
+    df['night'] = df['lighting'].astype(str).str.contains('night', case=False).astype(float)
+    df['rush_hour'] = df['time_of_day'].isin(['morning', 'evening']).astype(float)
+    df['lanes_speed'] = df['num_lanes'] * df['speed_limit']
+    df['sq_curv'] = df['curvature'] ** 2
+
+    return df
+
+if st.button("Predict"):
+    df=pd.DataFrame([road1,road2])
+    df = creating_feature(df)
+    prediction=model.predict(df)
+
+    safer='Road1' if prediction[0]<prediction[1] else 'Road2'
+    st.markdown("Predicted Accident Risk")
+    chart=pd.DataFrame({
+        'road': ['road1', 'road2'],
+        'predicted_Risk': prediction.flatten()
+    })
+    st.bar_chart(chart.set_index('road'))
+    if choice==safer:
+        st.session_state.score+=1
+        st.success('Your prediction was successful')
+    else:
+        st.error('Your prediction was not successful')
+
+st.markdown(f"Your score:{st.session_state.score}")
+
+if st.button("Next Prediction"):
+    st.session_state.road1 = random_road()
+    st.session_state.road2 = random_road()
+    st.session_state.round+=1
+    st.rerun()
+
+
+st.markdown("_____")
+st.caption("Made By ** IMON HOSSAIN ** | kaggle:`imonhossain`")
