@@ -2,10 +2,11 @@ streamlit
 lightgbm
 pandas
 numpy
-scikit-learn
+scikit-learn==1.2.2
 joblib
 requests
 git-lfs
+
 
 
 
