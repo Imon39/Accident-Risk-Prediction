@@ -1,11 +1,9 @@
-gdown
 streamlit
 pandas
 numpy
 scikit-learn
-pickle
+xgboost
+lightgbm
+joblib
 requests
-
-
-
-
+git-lfs
