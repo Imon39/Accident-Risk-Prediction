@@ -17,7 +17,7 @@ class EnsembleModel:
 
 import joblib
 
-model=joblib.load("final_model.pkl")
+model=joblib.load("final_model_new.pkl")
 st.set_page_config(page_title="Pick the Safer Road", page_icon="🚗", layout="centered")
 st.title("Pick the safer road- Predict Accident Risk")
 st.markdown(" Test Your prediction About Road safety")
@@ -107,3 +107,4 @@ if st.button("Next Prediction"):
 st.markdown("_____")
 
 st.caption("Made By ** IMON HOSSAIN ** | kaggle:`imonhossain`")
+
