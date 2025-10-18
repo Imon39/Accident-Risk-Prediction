@@ -1,12 +1,12 @@
 streamlit
 lighgbm
-xgboost
 pandas
 numpy
 scikit-learn
 joblib
 requests
 git-lfs
+
 
 
 
