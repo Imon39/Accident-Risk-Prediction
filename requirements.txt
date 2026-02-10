@@ -1,8 +1,6 @@
-scikit-learn==1.2.2
-lightgbm
-joblib
-streamlit
+numpy<2.0
 pandas
-numpy==1.24.3
-
-
+joblib
+lightgbm
+scikit-learn
+streamlit
