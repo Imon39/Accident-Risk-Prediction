@@ -3,5 +3,6 @@ lightgbm
 joblib
 streamlit
 pandas
-numpy
+numpy==1.24.3
+
 
